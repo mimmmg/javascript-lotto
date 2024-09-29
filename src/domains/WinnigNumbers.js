@@ -1,10 +1,11 @@
-// WinningNumbers.js
+// WinningNumbers.js 
+// 당첨 번호 생성
 import NumberGenerator from "../utils/NumberGenerator";
 
 class WinningNumbers extends NumberGenerator {
     constructor(){
         super(); // 부모 클래스의 생성자 호출
-        this.numbers = this.generateNumbers(6,45); // 무작위로 당첨 번호 생성
+        this.numbers = this.generateNumbers(6,45); 
     }
 }
 

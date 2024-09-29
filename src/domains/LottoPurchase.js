@@ -36,6 +36,11 @@ class LottoPurchase{
 
     // 공용 메서드: 사용자 입력 번호 배열의 유효성 검증
     checkUserNumbers(userNumbers) {
+        // 6개의 번호가 입력되었는지 검증
+        if (userNumbers.length !== 6) {
+            throw new Error('로또 번호는 반드시 6개여야 합니다.');
+        }
+        
         // 각 번호 검증
         userNumbers.forEach(input => {
             this.checkInputFormat(input); // 입력 형식 검증 (공용 메서드 호출) 
