@@ -10,11 +10,28 @@ class WinningService{
     checkWinning(userTickets)   {
         return userTickets.map(ticket => {
             const matchedNumbers = ticket.filter(num => 
-                this.winningNumbers.numbers.includes(num)
+                this.WinningNumbers.numbers.includes(num)
         );
             const matchedCount = matchedNumbers.length; // 일치하는 번호의 개수 계산
             return matchedCount; // 일치하는 개수 반환
         });
+    }
+
+    // 등수와 당첨금 계산
+    calculatePrizes(matchedCounts) {
+        const prizeMoney = {
+            6: 200000000,
+            5: 3000000,
+            4: 50000,
+            3: 5000,
+            2: 500,
+            0: 0
+        };
+
+        return matchedCounts.map(count => ({
+            count,
+            prize: prizeMoney[count] || 0 // 일치하는 개수에 따른 당첨금 반환
+        }));
     }
 };
 

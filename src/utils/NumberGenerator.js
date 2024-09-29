@@ -9,7 +9,7 @@ class NumberGenerator{
             numbers.push(num);
         }
     }
-    return numbers,sort((a,b) => a-b); // 정렬된 배열을 메서드의 결과로 반환
+    return numbers.sort((a,b) => a-b); // 정렬된 배열을 메서드의 결과로 반환
     }
 }
 

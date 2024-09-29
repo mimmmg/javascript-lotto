@@ -33,7 +33,6 @@ readline.question('구입 금액을 입력해주세요: ', (amount) => {
         readline.question('로또 번호를 입력해주세요 (예: 1,2,3,4,5,6): ', (input) => { 
             try{
                 const userNumbers = input.split(',').map(Number); // 입력된 문자열을 배열로 변환
-                
                 // 사용자 번호 입력 검증
                 purchase.checkUserNumbers(userNumbers); // 번호 입력 검증 메서드 호출
                 console.log(`유효한 번호입니다.`);
@@ -42,13 +41,13 @@ readline.question('구입 금액을 입력해주세요: ', (amount) => {
                 const winningService = new WinningService(); 
                 const matchedCounts = winningService.checkWinning(tickets.map(ticket => ticket.numbers));
 
-                console.log(`당첨 결과: `);
-                matchedCounts.forEach((count, index) => {
-                    console.log(`티켓 ${index + 1}: ${count}개 일치`);
-                });
+                // 등수 및 당첨금 계산
+                const results = winningService.calculatePrizes(matchedCounts);
 
-                
-                readline.close();
+                console.log(`당첨 결과: `);
+                matchedCounts.forEach((result, index) => {
+                    console.log(`티켓 ${index + 1}: ${result.count}개 일치, 당첨금: ${result.prize}원`);
+                });
             } catch(error) {
                 console.error('유효하지 않은 번호입니다. 번호를 다시 입력해주세요.')
                 readline.close();
