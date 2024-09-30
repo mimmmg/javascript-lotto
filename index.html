@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
@@ -13,4 +13,67 @@
     </div>
     <script type="module" src="./src/js/index.js"></script>
   </body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로또 생성기</title>
+</head>
+<body>
+    <h1>로또 구매하기</h1>
+    
+    <label for="amount">구매 금액:</label>
+    <input type="number" id="amount" placeholder="금액을 입력하세요" />
+    <button id="purchaseButton">구매</button>
+
+    <h2>결과</h2>
+    <pre id="result"></pre>
+
+    <script>
+        document.getElementById('purchaseButton').addEventListener('click', async () => {
+            const amount = document.getElementById('amount').value;
+
+            // 로또 구매 API 호출
+            const response = await fetch('http://localhost:4000/purchase', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ amount })
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                let ticketNumbers = data.tickets.map(ticket => ticket.numbers.join(', ')).join('\n');
+                document.getElementById('result').textContent = `구매 가능 장수: ${data.count}\n생성된 로또 번호:\n${ticketNumbers}`;
+
+                // 로또 번호 입력 받기
+                const userNumbers = prompt('로또 번호를 입력해주세요 (예: 1,2,3,4,5,6):');
+                if (userNumbers) {
+                    const userResponse = await fetch('http://localhost:4000/check-numbers', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ userNumbers: userNumbers.split(',').map(Number) })
+                    });
+
+                    const userData = await userResponse.json();
+                    if (userResponse.ok) {
+                        document.getElementById('result').textContent += `\n${userData.message}`;
+                    } else {
+                        document.getElementById('result').textContent += `\n에러: ${userData.error}`;
+                    }
+                }
+            } else {
+                document.getElementById('result').textContent = `에러: ${data.error}`;
+            }
+        });
+    </script>
+</body>
 </html>
+

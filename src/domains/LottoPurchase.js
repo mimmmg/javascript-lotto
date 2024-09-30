@@ -1,62 +1,44 @@
-// LottoPurchase.js 
+import Lotto from './Lotto.js'; // Lotto 클래스를 import합니다.
 
-class LottoPurchase{
+class InvalidInputError extends Error {
+    constructor(message) {
+        super(message);
+        this.name = "InvalidInputError";
+    }
+}
+
+class LottoPurchase {
     constructor() {
-        this.ticketPrice = 1000;  // 로또 한장 가격 설정 
+        this.purchaseAmount = 0;
+        this.ticketPrice = 1000; // 로또 1장 가격 설정
+        this.lottoCount = 0; // 발행된 로또 장수
+        this.lotto = new Lotto(); // Lotto 클래스의 인스턴스를 생성
     }
 
-    // 구입 금액 확인 검증 
+    // 구매 금액 설정 및 로또 번호 생성
+    setPurchaseAmount(amount) {
+        this.purchaseAmount = this.#validatePurchaseAmount(amount);
+        this.lottoCount = this.purchaseAmount / this.ticketPrice; // 로또 장수 계산
+        this.lotto.generateNumbers(this.lottoCount); // 로또 번호 생성
+    }
+
+    // 구입 금액 입력 값 유효성 검사 메서드 (프라이빗)
     #validatePurchaseAmount(amount) {
-        if (amount < this.ticketPrice) {
-            throw new Error(`최소 금액은 ${this.ticketPrice}원입니다.`);
+        if (isNaN(amount) || amount < this.ticketPrice || amount % this.ticketPrice !== 0) {
+            throw new InvalidInputError("구매 금액은 1,000원 이상이어야 하며 1,000원의 배수여야 합니다.");
         }
-        return Math.floor(amount/ this.ticketPrice); // 총 구매 장수 반환
+        
+        return amount;
     }
 
-    // 사용자 입력 번호 배열 길이 검증
-    #validateNumberCount(userNumbers){
-        if(userNumbers.length !==6){
-            throw new Error('로또 번호는 반드시 6개여야 합니다.')
-        }
-    }
-
-    // 사용자 입력 번호 범위 검증
-    #validateUserNumbers(number){ 
-        if (number < 1 || number > 45) { 
-            throw new Error(`1부터 45사이의 번호를 입력 해주세요.`);
-        }
-        return true; 
-    }
-
-    // 사용자 입력 형식 검증(번호 이외 입력)
-    #validateInputFormat(input){
-        if(isNaN(input) || input.trim() === '' || !/^\d+$/.test(input.trim())){
-            throw new Error(`숫자만 입력 해주세요.`);
-        }
-        return true;
-    }
-
-    // 공용 메서드: 금액 확인 검증
-    checkPurchase(amount) {
-        return this.#validatePurchaseAmount(amount); 
-    }
-
-    // 공용 메서드: 사용자 입력 번호 배열 검증
-    checkUserNumbers(userNumbers) {
-        this.#validateNumberCount(userNumbers);
-       
-        // 각 번호 검증
-        userNumbers.forEach(input => {
-            this.checkInputFormat(input); // 입력 형식 검증 
-            const number = Number(input); // 입력을 숫자로 변환 
-            this.#validateUserNumbers(number); // 범위 검증 
-        });
-    }
-
-    // 공용 메서드: 입력 형식 검증
-    checkInputFormat(input){
-        this.#validateInputFormat(input); 
+    // 구매 금액 및 로또 장수 출력 메서드
+    displayPurchaseAmount() {
+        console.log(`💰 구매하신 로또 금액은 ${this.purchaseAmount}원입니다!`);
+        console.log(`🎟️ 총 발행된 로또 장수는 ${this.lottoCount}장입니다!`);
+        console.log(`🎉 생성된 로또 번호: ${this.lotto.getNumbers()}`);
     }
 }
 
 export default LottoPurchase;
+
+

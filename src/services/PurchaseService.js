@@ -1,6 +1,6 @@
 // PurchaseService.js
-import LottoTicket from "./src/domains/LottoTicket";
-import LottoPurchase from "./src/domains/LottoPurchase";
+import LottoTicket from "../domains/LottoTicket.js";
+import LottoPurchase from "../domains/LottoPurchase.js";
 
 
 class PurchaseService {

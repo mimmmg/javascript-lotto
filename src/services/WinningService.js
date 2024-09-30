@@ -1,5 +1,5 @@
 // WinningService.js
-import WinningNumbers from "../domains/WinnigNumbers";
+import WinningNumbers from "../domains/WinnigNumbers.js";
 
 class WinningService{
     constructor() {
