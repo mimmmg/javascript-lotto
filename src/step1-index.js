@@ -4,28 +4,21 @@
  */
 
 //index.js (사용자 입력 및 프로그램 실행)
-
+import Console from '@woowacourse/mission-utils'; // Console API
 import LottoPurchase from './LottoPurchase.js';
-import readline from 'readline';
 
-const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout
-});
+const startLottoPurchase = async () => {
+  const lottoPurchase = new LottoPurchase(); // 로또 구매 마법사 등장!
 
-const lottoPurchase = new LottoPurchase();
+  const inputAmount = await Console.readLineAsync("💰 로또 구매에 도전하시겠습니까? 원하는 금액을 입력해보세요: "); // 사용자 입력 받기
+  try {
+    lottoPurchase.setPurchaseAmount(Number(inputAmount)); // 로또 구매 금액 설정
+    lottoPurchase.displayPurchaseAmount(); // 로또 구매 정보를 출력하며 축하!
+  } catch (error) {
+    Console.print(`⚠️ 오우, 뭔가 잘못되었네요! 에러: ${error.message}`); // 에러 메시지 출력
+  }
+};
 
-rl.question("로또 구매 금액을 입력하세요 (최소 1,000원): ", (input) => {
-    try {
-        const amount = parseInt(input);
-        lottoPurchase.setPurchaseAmount(amount);
-        lottoPurchase.displayPurchaseAmount();
-    } catch (error) {
-        console.error(`[ERROR] ${error.message}`);
-        rl.close(); // 에러 발생 시 인터페이스 닫기
-    } finally {
-        rl.close(); // 정상 종료 시 인터페이스 닫기
-    }
-});
+startLottoPurchase(); // 로또 구매의 모험을 시작합니다!
 
         
