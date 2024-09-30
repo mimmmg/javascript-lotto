@@ -3,22 +3,37 @@
  * 브라우저 환경에서 사용하는 css 파일 등을 불러올 경우 정상적으로 빌드할 수 없습니다.
  */
 
-//index.js (사용자 입력 및 프로그램 실행)
-import Console from '@woowacourse/mission-utils'; // Console API
-import LottoPurchase from './LottoPurchase.js';
+// index.js (사용자 입력 및 프로그램 실행)
+import LottoPurchase from './domains/LottoPurchase.js';
+import WinningNumbersInput from './input/WinningNumbersInput.js';
+import WinningResultCalculator from './services/WinningResultCalculator.js';
+import Console from '@woowacourse/mission-utils';
 
-const startLottoPurchase = async () => {
-  const lottoPurchase = new LottoPurchase(); // 로또 구매 마법사 등장!
+const runLottoGame = async () => {
+  const lottoPurchase = new LottoPurchase();
+  const winningNumbersInput = new WinningNumbersInput();
 
-  const inputAmount = await Console.readLineAsync("💰 로또 구매에 도전하시겠습니까? 원하는 금액을 입력해보세요: "); // 사용자 입력 받기
-  try {
-    lottoPurchase.setPurchaseAmount(Number(inputAmount)); // 로또 구매 금액 설정
-    lottoPurchase.displayPurchaseAmount(); // 로또 구매 정보를 출력하며 축하!
-  } catch (error) {
-    Console.print(`⚠️ 오우, 뭔가 잘못되었네요! 에러: ${error.message}`); // 에러 메시지 출력
-  }
+  // 1. 구매 금액 입력
+  const purchaseAmount = await Console.readLineAsync("💰 로또 구매 금액을 입력해 주세요: ");
+  lottoPurchase.setPurchaseAmount(parseInt(purchaseAmount)); // 구매 금액 설정
+
+  // 2. 생성된 로또 번호 출력
+  lottoPurchase.displayPurchaseAmount();
+
+  // 3. 당첨 번호 및 보너스 번호 입력
+  await winningNumbersInput.getWinningNumbers();
+  winningNumbersInput.displayWinningNumbers();
+
+  // 4. 당첨 내역 계산 및 출력
+  const winnings = lottoPurchase.lottoNumbers; // Lotto 클래스 사용 없이 로또 번호 가져오기
+  const winningCalculator = new WinningResultCalculator(winnings, winningNumbersInput.winningNumbers, winningNumbersInput.bonusNumber, lottoPurchase.ticketPrice);
+  
+  const results = winningCalculator.calculateResults();
+  winningCalculator.displayResults(results);
 };
 
-startLottoPurchase(); // 로또 구매의 모험을 시작합니다!
+// 프로그램 실행
+runLottoGame();
+
 
         
