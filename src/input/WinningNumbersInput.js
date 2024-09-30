@@ -1,3 +1,4 @@
+// WinningNumbersInput.js
 import Console from '@woowacourse/mission-utils';
 
 class InvalidWinningNumberError extends Error {
@@ -7,7 +8,7 @@ class InvalidWinningNumberError extends Error {
   }
 }
 
-class WinningNumbers {
+class WinningNumbersInput {
   constructor() {
     this.winningNumbers = [];
     this.bonusNumber = null;
@@ -79,5 +80,5 @@ class WinningNumbers {
   }
 }
 
-export default WinningNumbers;
+export default WinningNumbersInput;
 
