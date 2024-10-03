@@ -1,6 +1,3 @@
-// Lotto.js
-import Random from '@woowacourse/mission-utils'; // Random API
-
 class Lotto {
   #numbers;
 
@@ -31,21 +28,14 @@ class Lotto {
   #validateRange(numbers) {
     numbers.forEach(num => {
       if (num < 1 || num > 45) {
-        throw new Error("[ERROR] 로또 번호는 1에서 45 사이의 숫자여야 합니다.");
+        throw new Error(`[ERROR] 로또 번호 ${num}는 1에서 45 사이의 숫자여야 합니다.`);
       }
     });
   }
 
-  static generateNumbers() {
-    return Random.pickUniqueNumbersInRange(1, 45, 6).sort((a, b) => a - b);
-  }
-
   getNumbers() {
-    return this.#numbers;
+    return [...this.#numbers]; // 배열의 복사본 반환
   }
 }
 
 export default Lotto;
-
-
-  

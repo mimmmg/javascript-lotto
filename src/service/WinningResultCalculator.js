@@ -1,22 +1,20 @@
-import Console from '@woowacourse/mission-utils';
-
+// WinningResultCalculator.js
 class WinningResultCalculator {
   constructor(purchasedNumbers, winningNumbers, bonusNumber, ticketPrice) {
-    this.purchasedNumbers = purchasedNumbers; // 구매한 로또 번호
-    this.winningNumbers = winningNumbers; // 당첨 번호
-    this.bonusNumber = bonusNumber; // 보너스 번호
-    this.ticketPrice = ticketPrice; // 티켓 가격
+    this.purchasedNumbers = purchasedNumbers;
+    this.winningNumbers = winningNumbers  || [];
+    this.bonusNumber = bonusNumber;
+    this.ticketPrice = ticketPrice;
     this.prizes = {
       3: 5000,
       4: 50000,
       5: 1500000,
       6: 2000000000
-    }; // 당첨 금액
+    };
   }
 
   calculateResults() {
-    const winnings = this.purchasedNumbers.map(ticket => this.#calculateWinning(ticket));
-    return winnings;
+    return this.purchasedNumbers.map(ticket => this.#calculateWinning(ticket));
   }
 
   #calculateWinning(ticket) {
@@ -33,7 +31,7 @@ class WinningResultCalculator {
     } else if (matchedCount === 4) {
       prize = this.prizes[3]; // 4등
     } else if (matchedCount === 3) {
-      prize = this.prizes[2]; // 5등 (이 부분은 3등이 되어야 함)
+      prize = this.prizes[2]; // 5등
     }
 
     return { ticket, matchedCount, prize };
@@ -57,21 +55,22 @@ class WinningResultCalculator {
       else if (matchedCount === 6) prizeCounts[6]++;
     });
 
-    Console.print(`🏆 당신의 당첨 내역:`);
-    Console.print(`${prizeCounts[3]}개 일치 (5,000원) - ${prizeCounts[3]}개`);
-    Console.print(`${prizeCounts[4]}개 일치 (50,000원) - ${prizeCounts[4]}개`);
-    Console.print(`${prizeCounts[5]}개 일치 (1,500,000원) - ${prizeCounts[5]}개`);
-    Console.print(`${prizeCounts['5Bonus']}개 일치, 보너스 볼 일치 (30,000,000원) - ${prizeCounts['5Bonus']}개`);
-    Console.print(`${prizeCounts[6]}개 일치 (2,000,000,000원) - ${prizeCounts[6]}개`);
+    console.log(`🏆 당신의 당첨 내역:`);
+    console.log(`${prizeCounts[3]}개 일치 (5,000원) - ${prizeCounts[3]}개`);
+    console.log(`${prizeCounts[4]}개 일치 (50,000원) - ${prizeCounts[4]}개`);
+    console.log(`${prizeCounts[5]}개 일치 (1,500,000원) - ${prizeCounts[5]}개`);
+    console.log(`${prizeCounts['5Bonus']}개 일치, 보너스 볼 일치 (30,000,000원) - ${prizeCounts['5Bonus']}개`);
+    console.log(`${prizeCounts[6]}개 일치 (2,000,000,000원) - ${prizeCounts[6]}개`);
 
     const totalPrize = winnings.reduce((sum, result) => sum + result.prize, 0);
-    Console.print(`💰 총 상금: ${totalPrize}원`);
+    console.log(`💰 총 상금: ${totalPrize}원`);
 
     const totalSpent = this.purchasedNumbers.length * this.ticketPrice;
     const profit = totalPrize - totalSpent;
-    const returnRate = ((profit / totalSpent) * 100).toFixed(2); // 소수점 둘째 자리까지 반올림
-    Console.print(`📈 수익률: ${parseFloat(returnRate)}%`);
+    const returnRate = ((profit / totalSpent) * 100).toFixed(2);
+    console.log(`📈 수익률: ${parseFloat(returnRate)}%`);
   }
 }
 
 export default WinningResultCalculator;
+

@@ -4,17 +4,19 @@
  */
 
 // index.js (사용자 입력 및 프로그램 실행)
-import LottoPurchase from './domains/LottoPurchase.js';
-import WinningNumbersInput from './input/WinningNumbersInput.js';
-import WinningResultCalculator from './services/WinningResultCalculator.js';
-import Console from '@woowacourse/mission-utils';
+import LottoPurchaseService from './src/service/LottoPurchaseService.js';
+import CommandInputView from './src/view/inputview/CommandInputView.js';
+import WinningResultCalculator from './src/service/WinningResultCalculator.js';
+import promptSync from 'prompt-sync';
+
+const prompt = promptSync();
 
 const runLottoGame = async () => {
-  const lottoPurchase = new LottoPurchase();
-  const winningNumbersInput = new WinningNumbersInput();
+  const lottoPurchase = new LottoPurchaseService();
+  const winningNumbersInput = new CommandInputView();
 
   // 1. 구매 금액 입력
-  const purchaseAmount = await Console.readLineAsync("💰 로또 구매 금액을 입력해 주세요: ");
+  const purchaseAmount = prompt("💰 로또 구매 금액을 입력해 주세요: ");
   lottoPurchase.setPurchaseAmount(parseInt(purchaseAmount)); // 구매 금액 설정
 
   // 2. 생성된 로또 번호 출력
@@ -26,14 +28,16 @@ const runLottoGame = async () => {
 
   // 4. 당첨 내역 계산 및 출력
   const winnings = lottoPurchase.lottoNumbers; // Lotto 클래스 사용 없이 로또 번호 가져오기
-  const winningCalculator = new WinningResultCalculator(winnings, winningNumbersInput.winningNumbers, winningNumbersInput.bonusNumber, lottoPurchase.ticketPrice);
-  
+  const winningCalculator = new WinningResultCalculator(
+    winnings,
+    winningNumbersInput.winningNumbers,
+    winningNumbersInput.bonusNumber,
+    lottoPurchase.ticketPrice
+  );
+
   const results = winningCalculator.calculateResults();
   winningCalculator.displayResults(results);
 };
 
 // 프로그램 실행
 runLottoGame();
-
-
-        

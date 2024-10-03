@@ -1,4 +1,4 @@
-import LottoPurchase from './LottoPurchase.js';
+import LottoPurchaseService from './LottoPurchaseService.js';
 
 describe('LottoPurchase 클래스 예외 테스트', () => {
   let lottoPurchase;

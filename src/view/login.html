@@ -1,0 +1,21 @@
+<form method="POST" action="/join">
+  <input placeholder="Username" type="text" name="username" required />
+  <input placeholder="Password" type="password" name="password" required />
+  <input type="submit" value="Create Account" />
+</form>
+
+
+<script>
+  function validateForm() {
+    const username = document.querySelector('input[name="username"]').value;
+    
+    // 사용자 이름 최소 길이 검사
+    if (username.length < 3) {
+      alert("사용자 이름은 최소 3자 이상이어야 합니다.");
+      return false; // 폼 제출 중단
+    }
+    
+    return true; // 폼 제출 허용
+  }
+</script>
+  

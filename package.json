@@ -8,7 +8,8 @@
     "test": "jest --watch --no-cache",
     "build-step1": "webpack --config step1.config.js",
     "start-step1": "npm run build-step1 && node dist/step1-bundle.js",
-    "start-step2": "webpack serve --open --config step2.config.js"
+    "start-step2": "webpack serve --open --config step2.config.js",
+     "start": "node server.js"
   },
   "devDependencies": {
     "@babel/cli": "^7.20.7",
@@ -42,6 +43,7 @@
   "dependencies": {
     "body-parser": "^1.20.3",
     "cors": "^2.8.5",
-    "express": "^4.21.0"
+    "express": "^4.21.0",
+    "prompt-sync": "^4.2.0"
   }
 }
